@@ -83,6 +83,18 @@ public class CustomTitleView  extends View {
                     break;
             }
         }
+        /**
+         * 程序在运行时维护了一个 TypedArray的池，
+         * 程序调用时，会向该池中请求一个实例，用完之后，调用 recycle()
+         * 方法来释放该实例，从而使其可被其他模块复用。
+         *
+         * 那为什么要使用这种模式呢？答案也很简单，TypedArray的使用场景之一，
+         * 就是上述的自定义View，会随着 Activity的每一次Create而Create，
+         * 因此，需要系统频繁的创建array，对内存和性能是一个不小的开销，如果不使用池模式，
+         * 每次都让GC来回收，很可能就会造成OutOfMemory。
+         * ---------------------
+         * 这就是使用池+单例模式的原因
+         */
         a.recycle();
 
         /**
