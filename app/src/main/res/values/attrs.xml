@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="titleText" format="string"/>
+    <attr name="titleTextColor" format="color"/>
+    <attr name="titleTextSize" format="dimension"/>
+
+    <!--format 为该属性的取值 一共有一共有：string,color,demension,integer,enum,reference,float,boolean,fraction,flag;不清楚的可以google一把。-->
+    <declare-styleable name="customTitleView">
+        <attr name="titleText"/>
+        <attr name="titleTextColor"/>
+        <attr name="titleTextSize"/>
+    </declare-styleable>
+</resources>
