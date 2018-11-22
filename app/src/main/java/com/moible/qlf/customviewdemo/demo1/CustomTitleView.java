@@ -65,9 +65,10 @@ public class CustomTitleView  extends View {
          */
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.customTitleView, defStyle, 0);
         int n = a.getIndexCount();
-        Log.i(TAG, "===CustomTitleView: " + n);
+
         for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
+            Log.i(TAG, "===CustomTitleView: " + attr);
             switch (attr) {
                 case R.styleable.customTitleView_titleText:
                     mTitleText = a.getString(attr);

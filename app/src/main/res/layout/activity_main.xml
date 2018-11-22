@@ -4,13 +4,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto">
 
-    <com.moible.qlf.customviewdemo.demo1.CustomTitleView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        custom:titleText="43245"
-        custom:titleTextColor="#ff0000"
-        custom:titleTextSize="40sp" />
-
+    <!--<com.moible.qlf.customviewdemo.demo1.CustomTitleView1-->
+        <!--android:id="@+id/custom"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--custom:titleText="43245"-->
+        <!--custom:titleTextColor="#ff0000"-->
+        <!--custom:titleTextSize="40sp" />-->
+       <com.moible.qlf.customviewdemo.doubleseekbar.DoubleSeekBar
+           android:id="@+id/doubleSeek"
+           android:layout_width="match_parent"
+           android:layout_height="100dp"
+           android:background="@color/colorAccent"
+           android:paddingLeft="100dp"
+           />
 
 </android.support.constraint.ConstraintLayout>

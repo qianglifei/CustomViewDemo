@@ -4,10 +4,27 @@
     <attr name="titleTextColor" format="color"/>
     <attr name="titleTextSize" format="dimension"/>
 
-    <!--format 为该属性的取值 一共有一共有：string,color,demension,integer,enum,reference,float,boolean,fraction,flag;不清楚的可以google一把。-->
+    <!--format 为该属性的取值 一共有一共有：string,color,demension,integer,
+    enum,reference,float,boolean,fraction,flag;不清楚的可以google一把。-->
     <declare-styleable name="customTitleView">
         <attr name="titleText"/>
         <attr name="titleTextColor"/>
         <attr name="titleTextSize"/>
+    </declare-styleable>
+    
+    <attr name="titleText1" format="string"/>
+    <attr name="titleText1Color" format="color"/>
+    <attr name="titleText1Size" format="dimension"/>
+
+    <declare-styleable name="CustomTitleView1">
+        <attr name="titleText1"/>
+        <attr name="titleText1Color"/>
+        <attr name="titleText1Size"/>
+    </declare-styleable>
+    
+    <attr name="scaleNumber" format="integer"/>
+
+    <declare-styleable name="DoubleSeekBar">
+        <attr name="scaleNumber"/>
     </declare-styleable>
 </resources>

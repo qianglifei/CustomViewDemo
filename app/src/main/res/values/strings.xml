@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">CustomViewDemo</string>
+    <!--"1k","2k","3k","4k","5k","6k","7k","8k","9k","10k","10k+"-->
+    <string-array name="titleNameArr">
+        <item>1k</item>
+        <item>2k</item>
+        <item>3k</item>
+        <item>4k</item>
+        <item>5k</item>
+        <item>6k</item>
+        <item>7k</item>
+        <item>8k</item>
+        <item>9k</item>
+        <item>10k</item>
+        <item>10k+</item>
+    </string-array>
 </resources>
