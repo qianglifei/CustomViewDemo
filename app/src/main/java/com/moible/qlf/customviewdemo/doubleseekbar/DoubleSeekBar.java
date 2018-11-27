@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.moible.qlf.customviewdemo.R;
 import com.moible.qlf.customviewdemo.util.DensityUtil;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class DoubleSeekBar extends View {
     //刻度数量
     private Integer scaleNumber = 0;
@@ -34,7 +37,7 @@ public class DoubleSeekBar extends View {
     /**
      * 滑块的宽度以及高度
      */
-    private static final Integer SLIDER_WIDTH = 50;
+    private static final Integer SLIDER_WIDTH = 60;
     private static final Integer SLIDER_HEIGHT = 100;
     private String[] scaleArray = new String[10];
     private Integer[] titleDistance = new Integer[10];
@@ -72,6 +75,20 @@ public class DoubleSeekBar extends View {
     private boolean isSoliderLeft = false,isSoliderRight = false;
     private int[] dValue2 = new int[10];
 
+    /**
+     * 刻度数组
+     *
+     * @param context
+     */
+
+    private Set<Scale> mScale = new HashSet<>();
+
+    /**
+     * @param context
+     */
+    private OnScaleListener iScaleListener = null;
+
+
     public DoubleSeekBar(Context context) {
        this(context,null);
         Log.i("TAG", "===DoubleSeekBar1: " + currentX2);
@@ -89,6 +106,12 @@ public class DoubleSeekBar extends View {
                 R.styleable.DoubleSeekBar,defStyleAttr,0);
         //获取刻度数组
         scaleArray = this.getResources().getStringArray(R.array.titleNameArr);
+        for (int i = 0; i < scaleArray.length; i++) {
+            Scale scale = new Scale();
+            scale.setIndex(i);
+            scale.setScaleValue(scaleArray[i]);
+            mScale.add(scale);
+        }
 
         int a = typedArray.getIndexCount();
         for (int i = 0; i < a ; i++) {
@@ -192,7 +215,7 @@ public class DoubleSeekBar extends View {
 //                Log.i("TAG", "===MnTouchEventCurrentX:" + currentX);
 //                Log.i("TAG", "===MnTouchEventCurrentX2:" + currentX2);
 //                Log.i("TAG", "===MnTouchEventCurrentX-X2:" +(currentX2 - currentX));
-                if (currentX2 - currentX >= sDistance*2){
+                if (currentX2 - currentX >= sDistance) {
                     invalidate();
                     currentXT = currentX;
                     currentX2T = currentX2;
@@ -226,15 +249,24 @@ public class DoubleSeekBar extends View {
                     currentX2 = Math.round(titleDistance[minValueIndex2]);
                     invalidate();
                 }
+
+                //iScaleListener.getDoubleSeekValue();
                 break;
             default:
         }
         return true;
     }
+
+    /**
+     * 获取索引最小值
+     *
+     * @param dValue
+     * @return
+     */
     private int getMinIndex(int[] dValue) {
         int minNum = dValue[0];
         int minNumIndex = 0;
-        for (int i=0;i < dValue.length;i++) {
+        for (int i = 0; i < dValue.length; i++) {
             if(dValue[i] < minNum) {
                 minNum = dValue[i];
                 minNumIndex = i;
@@ -254,7 +286,6 @@ public class DoubleSeekBar extends View {
                 getWidth() - 27,
                 SEEKBAR_Y_HEIGHT_E);
         canvas.drawBitmap(seekBarBackgroundBit,null,mRectBack,mPaintScale);
-
 
         //绘制前景
         mRectFore = new Rect(currentX + 27,
@@ -304,5 +335,13 @@ public class DoubleSeekBar extends View {
     @Override
     public boolean performClick() {
         return super.performClick();
+    }
+
+    public interface OnScaleListener {
+        void getDoubleSeekValue(String strLow, String strHigh);
+    }
+
+    public void setOnScaleListener(OnScaleListener listener) {
+        iScaleListener = listener;
     }
 }
