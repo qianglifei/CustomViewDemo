@@ -34,9 +34,9 @@ public class DoubleSeekBar extends View {
     /**
      * 滑块的宽度以及高度
      */
-    private static final Integer SLIDER_WIDTH = 70;
+    private static final Integer SLIDER_WIDTH = 50;
     private static final Integer SLIDER_HEIGHT = 100;
-    private String[] scaleArray;
+    private String[] scaleArray = new String[10];
     private Integer[] titleDistance = new Integer[10];
     /**
      * 字体的绘制范围
@@ -58,6 +58,19 @@ public class DoubleSeekBar extends View {
      */
     private int SEEKBAR_Y_HEIGHT_B = DensityUtil.dip2px(getContext(),55);
     private int SEEKBAR_Y_HEIGHT_E = DensityUtil.dip2px(getContext(),60);
+
+    /**
+     * 进度条的间距
+     * @param context
+     *
+     */
+
+    private static Integer sDistance = 0;
+    private int[] dValue = new int[10];
+    private int minValueIndex = 0;
+    private int minValueIndex2 = 10;
+    private boolean isSoliderLeft = false,isSoliderRight = false;
+    private int[] dValue2 = new int[10];
 
     public DoubleSeekBar(Context context) {
        this(context,null);
@@ -106,15 +119,14 @@ public class DoubleSeekBar extends View {
 
         //滑动块图
         seekBarSlideBlockBit = BitmapFactory.decodeResource(getResources(),R.mipmap.icon_tuodong);
-        Log.i("TAG", "===DoubleSeekBar3: " + mSeekBarBottom);
         if(seekBarSlideBlockBit == null){
             Toast.makeText(context, "你的图片是空的", Toast.LENGTH_SHORT).show();
-
         }
         //进度条前景图
         seekBarForegroundBit = BitmapFactory.decodeResource(getResources(),R.mipmap.blue);
         //进度条背景图
         seekBarBackgroundBit = BitmapFactory.decodeResource(getResources(),R.mipmap.back);
+
     }
 
 
@@ -129,7 +141,6 @@ public class DoubleSeekBar extends View {
         if (widthMode == MeasureSpec.EXACTLY){
             mSeekBarWidth = width;
             currentX2 = mSeekBarWidth;
-            Log.i("TAG", "===onMeasure: " + DensityUtil.px2dip(getContext(),mSeekBarWidth));
         }else {
         //宽一般为wrap_content
 
@@ -137,7 +148,6 @@ public class DoubleSeekBar extends View {
 
         if (heightMode == MeasureSpec.EXACTLY){
             mSeekBarBottom = height;
-            Log.i("TAG", "===onMeasure: " + DensityUtil.px2dip(getContext(),mSeekBarBottom));
         }
 
     }
@@ -149,59 +159,110 @@ public class DoubleSeekBar extends View {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 mPreX = x;
-                Log.i("TAG", "===onTouchEventX:" + mPreX);
-                Log.i("TAG", "===onTouchEventCurrentX:" + currentX);
-                Log.i("TAG", "===onTouchEventCurrentX2:" + currentX2);
-                Log.i("TAG", "===onTouchEventCurrentX-X2:" +(currentX2 - currentX));
-                currentX = mPreX;
+//                Log.i("TAG", "===onTouchEventX:" + mPreX);
+//                Log.i("TAG", "===onTouchEventCurrentX:" + currentX);
+//                Log.i("TAG", "===onTouchEventCurrentX2:" + currentX2);
+//                Log.i("TAG", "===onTouchEventCurrentX-X2:" +(currentX2 - currentX));
                 break;
             case MotionEvent.ACTION_MOVE:
                 //判断手指移动的左滑块还是右滑块
                 //左滑块在移动
                 if (Math.abs(mPreX - mRectLeft.right) < Math.abs(mPreX - mRectRight.left)){
+                    isSoliderLeft = true;
+                    isSoliderRight = false;
                     if(x < mRectLeft.width() / 2){
                         currentX = 0;
                     }else{
-                        if (currentX2 - currentX >= 200){
-                            currentX = x;
-                        }else {
-
-                        }
-                        invalidate();
+                        currentX = x;
                     }
-                    Log.i("TAG", "===onTouchEventCurrentX:" + currentX);
-                    Log.i("TAG", "===onTouchEventCurrentX2:" + currentX2);
-                    Log.i("TAG", "===onTouchEventCurrentX-X2:" +(currentX2 - currentX));
-                }
-//                //右滑块在移动
-//                if (Math.abs(mPreX - mRectLeft.right) >= Math.abs(mPreX - mRectRight.left)){
-//                    if (mPreX > mSeekBarWidth){
-//                        currentX2 = getWidth();
-//                    }else {
-//                        if (currentX2 - currentX > 200){
-//                            currentX2 = x;
-//                            currentX2T = x;
-//                            invalidate();
-//                            Log.i("TAG", "===onTouchEvent: " + titleDistance[0] );
-//                        }
-//                    }
 //                    Log.i("TAG", "===onTouchEventCurrentX:" + currentX);
 //                    Log.i("TAG", "===onTouchEventCurrentX2:" + currentX2);
 //                    Log.i("TAG", "===onTouchEventCurrentX-X2:" +(currentX2 - currentX));
-//                }
+                }
+                //右滑块在移动
+                if (Math.abs(mPreX - mRectLeft.right) >= Math.abs(mPreX - mRectRight.left)){
+                    isSoliderLeft = false;
+                    isSoliderRight = true;
+                    if (mPreX > mSeekBarWidth){
+                        currentX2 = getWidth();
+                    }else {
+                        currentX2 = x;
+                    }
+                }
+//                Log.i("TAG", "===MnTouchEventCurrentX:" + currentX);
+//                Log.i("TAG", "===MnTouchEventCurrentX2:" + currentX2);
+//                Log.i("TAG", "===MnTouchEventCurrentX-X2:" +(currentX2 - currentX));
+                if (currentX2 - currentX >= sDistance*2){
+                    invalidate();
+                    currentXT = currentX;
+                    currentX2T = currentX2;
+                }
                 break;
             case MotionEvent.ACTION_UP:
-
+                currentX = currentXT;
+                currentX2 = currentX2T;
+                if (isSoliderLeft){
+                    for (int i = 0; i < titleDistance.length ; i++) {
+                        //Log.i("TAG", "===onTouchEvent: " + (currentX - titleDistance[i]));
+                        dValue[i] = Math.abs(currentX - titleDistance[i]);
+                        //Log.i("TAG", "====onTouchEvent: " + dValue[i]);
+                    }
+                    minValueIndex = getMinIndex(dValue);
+                    Log.i("TAG", "===onTouchEvent: " + minValueIndex);
+                    Log.i("TAG", "===onTouchEventDistance: " + dValue[minValueIndex]);
+                    if (minValueIndex == 0){
+                        currentX = 0;
+                    }else {
+                        currentX = titleDistance[minValueIndex] - SLIDER_WIDTH / 2;
+                        Log.i("TAG", "===onTouchEvent: " +  titleDistance[minValueIndex]);
+                        Log.i("TAG", "===onTouchEventCurrent: " + currentX);
+                    }
+                    invalidate();
+                }else if (isSoliderRight){
+                    for (int i = 0; i < titleDistance.length ; i++) {
+                        dValue2[i] = Math.abs(currentX2 - titleDistance[i]);
+                    }
+                    minValueIndex2 = getMinIndex(dValue2);
+                    currentX2 = Math.round(titleDistance[minValueIndex2]);
+                    invalidate();
+                }
                 break;
             default:
         }
         return true;
+    }
+    private int getMinIndex(int[] dValue) {
+        int minNum = dValue[0];
+        int minNumIndex = 0;
+        for (int i=0;i < dValue.length;i++) {
+            if(dValue[i] < minNum) {
+                minNum = dValue[i];
+                minNumIndex = i;
+            }
+        }
+        return minNumIndex;
     }
 
     @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        //绘制背景
+        mRectBack = new Rect(27,
+                SEEKBAR_Y_HEIGHT_B,
+                getWidth() - 27,
+                SEEKBAR_Y_HEIGHT_E);
+        canvas.drawBitmap(seekBarBackgroundBit,null,mRectBack,mPaintScale);
+
+
+        //绘制前景
+        mRectFore = new Rect(currentX + 27,
+                SEEKBAR_Y_HEIGHT_B,
+                currentX2 - 27,
+                SEEKBAR_Y_HEIGHT_E);
+        canvas.drawBitmap(seekBarForegroundBit,null,mRectFore,mPaintScale);
+
         //绘制左滑块
         mRectLeft = new Rect(currentX,
                 DensityUtil.dip2px(getContext(),50),
@@ -215,46 +276,27 @@ public class DoubleSeekBar extends View {
                 currentX2 - SLIDER_WIDTH ,getHeight());
         canvas.drawBitmap(seekBarSlideBlockBit,null,mRectRight,mPaintScale);
 
-        //绘制背景
-        mRectBack = new Rect(mRectLeft.width() / 2,
-                SEEKBAR_Y_HEIGHT_B,
-                getWidth() - mRectLeft.width() / 2,
-                SEEKBAR_Y_HEIGHT_E);
-        canvas.drawBitmap(seekBarBackgroundBit,null,mRectBack,mPaintScale);
-
-        //绘制前景
-        mRectFore = new Rect(currentX + mRectLeft.width() / 2,
-                SEEKBAR_Y_HEIGHT_B,
-                currentX2 - mRectLeft.width() / 2,
-                SEEKBAR_Y_HEIGHT_E);
-        canvas.drawBitmap(seekBarForegroundBit,null,mRectFore,mPaintScale);
-
         //绘制文字
         drawText(canvas);
     }
 
     private void drawText(Canvas canvas) {
-        Log.i("TAG", "===onDraw: "  + DensityUtil.px2dip(getContext(),getPaddingLeft()));
+        //刻度坐标数组
         for (int i = 0; i < scaleArray.length - 1 ; i++) {
             titleDistance[i] = mSeekBarWidth / 10 * i;
-            Log.i("TAG", "===onDraw: " + titleDistance[i]);
         }
-
+        sDistance = titleDistance[1];
         for (int n = 0; n < scaleArray.length ; n++) {
             rectText = new Rect(27, 40, getWidth() - 27, 50);
             if (n == 0) {
-                canvas.drawText(scaleArray[n], 0,  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                canvas.drawText(scaleArray[n], 15,  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                         40,getResources().getDisplayMetrics()), mPaintText);
-            }else if (n == scaleArray.length - 2){
-                canvas.drawText(scaleArray[n], rectText.width() / 10 * n - 20, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        40,getResources().getDisplayMetrics()), mPaintText);
-            } else if (n == scaleArray.length - 1) {
-                canvas.drawText(scaleArray[n], mSeekBarWidth - 100, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+            }else if (n == scaleArray.length - 1) {
+                canvas.drawText(scaleArray[n], mSeekBarWidth - 70, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                         40,getResources().getDisplayMetrics()), mPaintText);
             } else {
                 canvas.drawText(scaleArray[n], rectText.width() / 10 * n,  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                         40,getResources().getDisplayMetrics()), mPaintText);
-                Log.i("TAG", "===drawText: " + scaleArray[n]);
             }
         }
     }
