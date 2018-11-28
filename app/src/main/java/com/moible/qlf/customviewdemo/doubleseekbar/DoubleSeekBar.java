@@ -245,7 +245,7 @@ public class DoubleSeekBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+//
         //绘制背景
         mRectBack = new Rect(27,
                 SEEKBAR_Y_HEIGHT_B,
@@ -259,7 +259,7 @@ public class DoubleSeekBar extends View {
                 SEEKBAR_Y_HEIGHT_B,
                 currentX2 - 27,
                 SEEKBAR_Y_HEIGHT_E);
-        canvas.drawBitmap(seekBarForegroundBit,null,mRectFore,mPaintScale);
+        //canvas.drawBitmap(seekBarForegroundBit,null,mRectFore,mPaintScale);
 
         //绘制左滑块
         mRectLeft = new Rect(currentX,
@@ -297,10 +297,5 @@ public class DoubleSeekBar extends View {
                         40,getResources().getDisplayMetrics()), mPaintText);
             }
         }
-    }
-
-    @Override
-    public boolean performClick() {
-        return super.performClick();
     }
 }
