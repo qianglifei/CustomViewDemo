@@ -156,7 +156,7 @@ public class DoubleSeekBar extends View {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 mPreX = x;
-//                Log.i("TAG", "===onTouchEventX:" + mPreX);
+                Log.i("TAG", "===onTouchEventX:" + mPreX);
 //                Log.i("TAG", "===onTouchEventCurrentX:" + currentX);
 //                Log.i("TAG", "===onTouchEventCurrentX2:" + currentX2);
 //                Log.i("TAG", "===onTouchEventCurrentX-X2:" +(currentX2 - currentX));
