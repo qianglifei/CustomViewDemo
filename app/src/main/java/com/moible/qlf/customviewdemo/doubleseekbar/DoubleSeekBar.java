@@ -53,7 +53,7 @@ public class DoubleSeekBar extends View {
     private int currentX2,currentX2T = 0;
     /**
      * 进度条Y起始，终止
-     * @param context
+     *
      *
      */
     private int SEEKBAR_Y_HEIGHT_B = DensityUtil.dip2px(getContext(),55);
@@ -61,7 +61,7 @@ public class DoubleSeekBar extends View {
 
     /**
      * 进度条的间距
-     * @param context
+     *
      *
      */
 
@@ -141,9 +141,6 @@ public class DoubleSeekBar extends View {
         if (widthMode == MeasureSpec.EXACTLY){
             mSeekBarWidth = width;
             currentX2 = mSeekBarWidth;
-        }else {
-        //宽一般为wrap_content
-
         }
 
         if (heightMode == MeasureSpec.EXACTLY){
@@ -289,7 +286,7 @@ public class DoubleSeekBar extends View {
         for (int n = 0; n < scaleArray.length ; n++) {
             rectText = new Rect(27, 40, getWidth() - 27, 50);
             if (n == 0) {
-                canvas.drawText(scaleArray[n], 15,  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                canvas.drawText(scaleArray[n], 0,  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                         40,getResources().getDisplayMetrics()), mPaintText);
             }else if (n == scaleArray.length - 1) {
                 canvas.drawText(scaleArray[n], mSeekBarWidth - 70, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
