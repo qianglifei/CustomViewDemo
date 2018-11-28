@@ -344,4 +344,14 @@ public class DoubleSeekBar extends View {
     public void setOnScaleListener(OnScaleListener listener) {
         iScaleListener = listener;
     }
+
+    public void setOnScaleListener1(OnScaleListener listener) {
+        iScaleListener = listener;
+    }
+    public void setOnScaleListener2(OnScaleListener listener) {
+        iScaleListener = listener;
+    }
+    public void setOnScaleListener3(OnScaleListener listener) {
+        iScaleListener = listener;
+    }
 }
