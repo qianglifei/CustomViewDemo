@@ -104,6 +104,7 @@ public class DoubleSeekBar extends View {
         //属性数组
         TypedArray typedArray = context.obtainStyledAttributes(attrs,
                 R.styleable.DoubleSeekBar,defStyleAttr,0);
+
         //获取刻度数组
         scaleArray = this.getResources().getStringArray(R.array.titleNameArr);
         for (int i = 0; i < scaleArray.length; i++) {
@@ -114,6 +115,7 @@ public class DoubleSeekBar extends View {
         }
 
         int a = typedArray.getIndexCount();
+
         for (int i = 0; i < a ; i++) {
             int attr = typedArray.getIndex(i);
             switch (attr){
@@ -249,8 +251,7 @@ public class DoubleSeekBar extends View {
                     currentX2 = Math.round(titleDistance[minValueIndex2]);
                     invalidate();
                 }
-
-                //iScaleListener.getDoubleSeekValue();
+                iScaleListener.getDoubleSeekValue(minValueIndex +"",minValueIndex2 +"");
                 break;
             default:
         }
