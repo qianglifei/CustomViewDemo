@@ -162,7 +162,7 @@ public class DoubleSeekBar extends View {
 //                Log.i("TAG", "===onTouchEventCurrentX-X2:" +(currentX2 - currentX));
                 break;
             case MotionEvent.ACTION_MOVE:
-                //判断手指移动的左滑块还是右滑块
+                //判断手指移动的左滑块还git merge origin/master是右滑块
                 //左滑块在移动
                 if (Math.abs(mPreX - mRectLeft.right) < Math.abs(mPreX - mRectRight.left)){
                     isSoliderLeft = true;
@@ -189,7 +189,7 @@ public class DoubleSeekBar extends View {
 //                Log.i("TAG", "===MnTouchEventCurrentX:" + currentX);
 //                Log.i("TAG", "===MnTouchEventCurrentX2:" + currentX2);
 //                Log.i("TAG", "===MnTouchEventCurrentX-X2:" +(currentX2 - currentX));
-                if (currentX2 - currentX >= sDistance*2){
+                if (currentX2 - currentX >= sDistance){
                     invalidate();
                     currentXT = currentX;
                     currentX2T = currentX2;
@@ -205,7 +205,7 @@ public class DoubleSeekBar extends View {
                         //Log.i("TAG", "====onTouchEvent: " + dValue[i]);
                     }
                     minValueIndex = getMinIndex(dValue);
-                    Log.i("TAG", "===onTouchEvent: " + minValueIndex);
+                    Log.i ("TAG", "===onTouchEvent: " + minValueIndex);
                     Log.i("TAG", "===onTouchEventDistance: " + dValue[minValueIndex]);
                     if (minValueIndex == 0){
                         currentX = 0;
@@ -228,6 +228,7 @@ public class DoubleSeekBar extends View {
         }
         return true;
     }
+
     private int getMinIndex(int[] dValue) {
         int minNum = dValue[0];
         int minNumIndex = 0;
