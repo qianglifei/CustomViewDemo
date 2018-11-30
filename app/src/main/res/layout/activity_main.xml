@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/colorPrimary"
@@ -13,11 +14,20 @@
         <!--custom:titleText="43245"-->
         <!--custom:titleTextColor="#ff0000"-->
         <!--custom:titleTextSize="40sp" />-->
-       <com.moible.qlf.customviewdemo.doubleseekbar.DoubleSeekBar
-           android:id="@+id/doubleSeek"
-           android:layout_width="match_parent"
-           android:layout_height="100dp"
-           android:background="@color/colorAccent"
-           />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="弹窗"
+        />
+
+    <!--<com.moible.qlf.customviewdemo.doubleseekbar.DoubleSeekBar-->
+        <!--android:id="@+id/doubleSeek"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:background="@color/colorAccent"-->
+        <!--custom:layout_constraintTop_toBottomOf="@+id/button"-->
+       <!--/>-->
 </android.support.constraint.ConstraintLayout>

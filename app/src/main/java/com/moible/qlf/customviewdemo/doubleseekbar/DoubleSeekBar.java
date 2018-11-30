@@ -40,7 +40,7 @@ public class DoubleSeekBar extends View {
     private static final Integer SLIDER_WIDTH = 50;
     private static final Integer SLIDER_HEIGHT = 100;
     private String[] scaleArray = new String[10];
-    private Integer[] titleDistance = new Integer[10];
+    private Integer[] titleDistance = new Integer[11];
     /**
      * 字体的绘制范围
      */
@@ -69,11 +69,11 @@ public class DoubleSeekBar extends View {
      */
 
     private static int sDistance = 0;
-    private int[] dValue = new int[10];
+    private int[] dValue = new int[11];
     private int minValueIndex = 0;
     private int minValueIndex2 = 10;
     private boolean isSoliderLeft = false,isSoliderRight = false;
-    private int[] dValue2 = new int[10];
+    private int[] dValue2 = new int[11];
 
     /**
      * 刻度数组
@@ -236,27 +236,23 @@ public class DoubleSeekBar extends View {
                     minValueIndex = Math.round(currentX / sDistance);
                     Log.i("TAG", "===onTouchEventIndex: " + (currentX / sDistance));
                     Log.i("TAG", "===onTouchEventDistance: " + minValueIndex);
-                    if (minValueIndex == 0){
-                        currentX = 0;
-                    }else {
-                        currentX = (titleDistance[minValueIndex]);
-                        Log.i("TAG", "===onTouchEvent: " +  titleDistance[minValueIndex]);
-                        Log.i("TAG", "===onTouchEventCurrent: " + currentX);
-                    }
+                    currentX = (titleDistance[minValueIndex]);
+                    Log.i("TAG", "===onTouchEvent: " +  titleDistance[minValueIndex]);
+                    Log.i("TAG", "===onTouchEventCurrent: " + currentX);
                     invalidate();
                 }else if (isSoliderRight){
 //                    for (int i = 0; i < titleDistance.length ; i++) {
 //                        dValue2[i] = Math.abs(currentX2 - titleDistance[i]);
 //                    }
 //                    minValueIndex2 = getMinIndex(dValue2);
-                    minValueIndex2 = Math.round(currentX2 / sDistance);
-                    if (minValueIndex2 == 10){
-                        currentX2 = getWidth();
-                    }else {
-                        currentX2 = titleDistance[minValueIndex2];
-                        Log.i("TAG", "===onTouchEventminValueIndex2: " + minValueIndex2);
-                        invalidate();
-                    }
+
+                    minValueIndex2 = (int) Math.round(currentX2  / (sDistance + 0.0));
+                    Log.i("TAG", "===onTouchEvent: " + currentX2);
+                    Log.i("TAG", "===onTouchEvent: " + sDistance);
+                    Log.i("TAG", "===onTouchEvent: " + (currentX2/sDistance));
+                    currentX2 = titleDistance[minValueIndex2] + SLIDER_WIDTH;
+                    Log.i("TAG", "===onTouchEventminValueIndex2: " + minValueIndex2);
+                    invalidate();
 
                 }
                 iScaleListener.getDoubleSeekValue(minValueIndex +"",minValueIndex2 +"");
@@ -288,18 +284,22 @@ public class DoubleSeekBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.drawColor(Color.WHITE);
+        //绘制文字
+        drawText(canvas);
+
         //绘制背景
-        mRectBack = new Rect(27,
+        mRectBack = new Rect(SLIDER_WIDTH / 2,
                 SEEKBAR_Y_HEIGHT_B,
-                getWidth() - 27,
+                getWidth() - SLIDER_WIDTH / 2,
                 SEEKBAR_Y_HEIGHT_E);
         canvas.drawBitmap(seekBarBackgroundBit,null,mRectBack,mPaintScale);
 
 
         //绘制前景
-        mRectFore = new Rect(currentX + 27,
+        mRectFore = new Rect(currentX + SLIDER_WIDTH / 2,
                 SEEKBAR_Y_HEIGHT_B,
-                currentX2 - 27,
+                currentX2 - SLIDER_WIDTH / 2,
                 SEEKBAR_Y_HEIGHT_E);
         canvas.drawBitmap(seekBarForegroundBit,null,mRectFore,mPaintScale);
 
@@ -314,23 +314,22 @@ public class DoubleSeekBar extends View {
         mRectRight = new Rect(currentX2,
                 DensityUtil.dip2px(getContext(),50),
                 currentX2 - SLIDER_WIDTH ,getHeight());
+        Log.i("TAG", "===onDrawCurrentX2: " + currentX2);
+        Log.i("TAG", "===onDrawHeight: " + getHeight());
         canvas.drawBitmap(seekBarSlideBlockBit,null,mRectRight,mPaintScale);
-
-        //绘制文字
-        drawText(canvas);
     }
 
     private void drawText(Canvas canvas) {
         //刻度坐标数组
-        for (int i = 0; i < scaleArray.length - 1 ; i++) {
-            titleDistance[i] = (mSeekBarWidth - 54) / 10 * i;
+        for (int i = 0; i < scaleArray.length ; i++) {
+            titleDistance[i] = (mSeekBarWidth - SLIDER_WIDTH) / 10 * i;
             Log.i("TAG", "===drawText: " + titleDistance[i]);
         }
         sDistance = titleDistance[1];
         for (int n = 0; n < scaleArray.length ; n++) {
             int measreTextWidth = (int) mPaintText.measureText(scaleArray[n]);
             Log.i("TAG", "===drawTextMeasure: " + measreTextWidth);
-            canvas.drawText(scaleArray[n], sDistance * n + 27 - measreTextWidth /2, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+            canvas.drawText(scaleArray[n], sDistance * n + SLIDER_WIDTH / 2 - measreTextWidth /2, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     40,getResources().getDisplayMetrics()), mPaintText);
 
         }
@@ -347,5 +346,11 @@ public class DoubleSeekBar extends View {
 
     public void setOnScaleListener(OnScaleListener listener) {
         iScaleListener = listener;
+    }
+
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        super.onWindowVisibilityChanged(visibility);
+        invalidate();
     }
 }
