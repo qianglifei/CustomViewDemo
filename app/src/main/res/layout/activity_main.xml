@@ -13,13 +13,12 @@
         <!--custom:titleText="43245"-->
         <!--custom:titleTextColor="#ff0000"-->
         <!--custom:titleTextSize="40sp" />-->
-       <com.moible.qlf.customviewdemo.doubleseekbar.DoubleSeekBar
-           android:id="@+id/doubleSeek"
-           android:layout_width="match_parent"
-           android:layout_height="100dp"
-           android:background="@color/colorAccent"
-           android:layout_marginLeft="10dp"
-           android:layout_marginRight="10dp"
-           />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="弹窗"
+        />
 
 </android.support.constraint.ConstraintLayout>
