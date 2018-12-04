@@ -9,8 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -328,8 +326,20 @@ public class DoubleSeekBar extends View {
         for (int n = 0; n < scaleArray.length ; n++) {
             int measreTextWidth = (int) mPaintText.measureText(scaleArray[n]);
             Log.i("TAG", "===drawTextMeasure: " + measreTextWidth);
-            canvas.drawText(scaleArray[n], sDistance * n + SLIDER_WIDTH / 2 - measreTextWidth / 2, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    40,getResources().getDisplayMetrics()), mPaintText);
+//            canvas.drawText(scaleArray[n], sDistance * n + SLIDER_WIDTH / 2 - measreTextWidth / 2, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+//                    40,getResources().getDisplayMetrics()), mPaintText);
+            int measureTextWidth = (int) mPaintText.measureText(scaleArray[n]);
+            Log.i("TAG", "===drawTextMeasure: " + measureTextWidth);
+            if (n == scaleArray.length - 1){
+                canvas.drawText(scaleArray[n], sDistance * n + SLIDER_WIDTH / 2 - measureTextWidth * 3 / 4, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        30,getResources().getDisplayMetrics()), mPaintText);
+            }else if (n == scaleArray.length - 2){
+                canvas.drawText(scaleArray[n], sDistance * n + SLIDER_WIDTH / 2 - measureTextWidth * 3 / 4, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        30,getResources().getDisplayMetrics()), mPaintText);
+            }else {
+                canvas.drawText(scaleArray[n], sDistance * n + SLIDER_WIDTH / 2 - measureTextWidth /2, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        30,getResources().getDisplayMetrics()), mPaintText);
+            }
         }
     }
 
@@ -350,31 +360,5 @@ public class DoubleSeekBar extends View {
     protected void onWindowVisibilityChanged(int visibility) {
         super.onWindowVisibilityChanged(visibility);
         invalidate();
-    }
-
-
-    @Nullable
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        //将数据保存在可序列化的Bundle
-        Bundle bundle = new Bundle();
-        //保存系统原有的状态信息
-        bundle.putParcelable(INSTANCE, super.onSaveInstanceState());
-        bundle.putInt("lowX", currentX);
-        bundle.putInt("highX", currentX2);
-        return bundle;
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        //判断state的状态，是否为Bundle类型，如果是吧数据取出来
-        if (state instanceof Bundle) {
-            Bundle bundle = (Bundle) state;
-            currentX = bundle.getInt("lowX");
-            currentX2 = bundle.getInt("highX");
-            super.onRestoreInstanceState(bundle.getParcelable(INSTANCE));
-            return;
-        }
-        super.onRestoreInstanceState(state);
     }
 }
