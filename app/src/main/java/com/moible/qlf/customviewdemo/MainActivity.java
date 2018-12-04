@@ -24,10 +24,10 @@ import com.moible.qlf.customviewdemo.doubleseekbar.DoubleSeekBar;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mButton = findViewById(R.id.button);
-        mButtonCancel = findViewById(R.id.buttonCancel);
-        View contentView = LayoutInflater.from(mContext).inflate(R.layout.pop, null);
-        mPopWindow = new PopupWindow(contentView);
+         mButton = findViewById(R.id.button);
+         mButtonCancel = findViewById(R.id.buttonCancel);
+         View contentView = LayoutInflater.from(mContext).inflate(R.layout.pop, null);
+         mPopWindow = new PopupWindow(contentView);
 
          mPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
          mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -39,15 +39,6 @@ import com.moible.qlf.customviewdemo.doubleseekbar.DoubleSeekBar;
          //设置PopWindow出现动画
          //mPopWindow.setAnimationStyle(R.style.AnimationPreview);
 
-         DoubleSeekBar mDoubleSeekBar = contentView.findViewById(R.id.doubleSeek);
-
-         mDoubleSeekBar.setOnScaleListener(new DoubleSeekBar.OnScaleListener() {
-             @Override
-             public void getDoubleSeekValue(String strLow, String strHigh) {
-                 Log.i(TAG, "===strLow: " + strLow);
-                 Log.i(TAG, "===strHigh: " + strHigh);
-         }});
-
          mButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -57,8 +48,17 @@ import com.moible.qlf.customviewdemo.doubleseekbar.DoubleSeekBar;
 
          mButtonCancel.setOnClickListener(new View.OnClickListener() {
              @Override
-             public void onClick(View v) {
+             public void onClick(View view) {
                  mPopWindow.dismiss();
+             }
+         });
+         DoubleSeekBar mDoubleSeekBar = contentView.findViewById(R.id.doubleSeek);
+
+         mDoubleSeekBar.setOnScaleListener(new DoubleSeekBar.OnScaleListener() {
+             @Override
+             public void getDoubleSeekValue(String strLow, String strHigh) {
+                 Log.i(TAG, "===strLow: " + strLow);
+                 Log.i(TAG, "===strHigh: " + strHigh);
              }
          });
     }
@@ -68,5 +68,4 @@ import com.moible.qlf.customviewdemo.doubleseekbar.DoubleSeekBar;
          lp.alpha = bgAlpha;
          getWindow().setAttributes(lp);
      }
-
 }
