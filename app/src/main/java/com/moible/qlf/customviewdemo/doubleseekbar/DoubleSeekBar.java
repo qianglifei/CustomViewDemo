@@ -9,6 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -22,6 +24,8 @@ import com.moible.qlf.customviewdemo.util.DensityUtil;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static android.content.ContentValues.TAG;
 
 public class DoubleSeekBar extends View {
     //刻度数量
@@ -37,7 +41,7 @@ public class DoubleSeekBar extends View {
     /**
      * 滑块的宽度以及高度
      */
-    private static final Integer SLIDER_WIDTH = 50;
+    private static final Integer SLIDER_WIDTH = 60;
     private static final Integer SLIDER_HEIGHT = 100;
     private String[] scaleArray = new String[10];
     private Integer[] titleDistance = new Integer[11];
@@ -60,7 +64,7 @@ public class DoubleSeekBar extends View {
      *
      */
     private int SEEKBAR_Y_HEIGHT_B = DensityUtil.dip2px(getContext(),55);
-    private int SEEKBAR_Y_HEIGHT_E = DensityUtil.dip2px(getContext(),60);
+    private int SEEKBAR_Y_HEIGHT_E = DensityUtil.dip2px(getContext(),61);
 
     /**
      * 进度条的间距
@@ -88,6 +92,9 @@ public class DoubleSeekBar extends View {
      */
     private OnScaleListener iScaleListener = null;
 
+    private static final String INSTANCE = "instance";
+
+    private static final int DEF_PADDING = 50;
 
     public DoubleSeekBar(Context context) {
        this(context,null);
@@ -221,6 +228,8 @@ public class DoubleSeekBar extends View {
                     invalidate();
                     currentXT = currentX;
                     currentX2T = currentX2;
+                }else {
+
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -229,7 +238,7 @@ public class DoubleSeekBar extends View {
                 if (isSoliderLeft){
 //                    for (int i = 0; i < titleDistance.length ; i++) {
 //                        //Log.i("TAG", "===onTouchEvent: " + (currentX - titleDistance[i]));
-//                        dValue[i] = Math.abs(currentX - titleDistance[i]);
+//                        dValue[i] = Math.round(Math.abs(currentX - titleDistance[i]));
 //                        //Log.i("TAG", "====onTouchEvent: " + dValue[i]);
 //                    }
 //                    minValueIndex = getMinIndex(dValue);
@@ -242,18 +251,16 @@ public class DoubleSeekBar extends View {
                     invalidate();
                 }else if (isSoliderRight){
 //                    for (int i = 0; i < titleDistance.length ; i++) {
-//                        dValue2[i] = Math.abs(currentX2 - titleDistance[i]);
+//                        dValue2[i] = Math.round(Math.abs(currentX2 - titleDistance[i]));
 //                    }
 //                    minValueIndex2 = getMinIndex(dValue2);
-
-                    minValueIndex2 = (int) Math.round(currentX2  / (sDistance + 0.0));
+                    minValueIndex2 = (int) Math.round(currentX2 / (sDistance + 0.0));
                     Log.i("TAG", "===onTouchEvent: " + currentX2);
                     Log.i("TAG", "===onTouchEvent: " + sDistance);
                     Log.i("TAG", "===onTouchEvent: " + (currentX2/sDistance));
                     currentX2 = titleDistance[minValueIndex2] + SLIDER_WIDTH;
                     Log.i("TAG", "===onTouchEventminValueIndex2: " + minValueIndex2);
                     invalidate();
-
                 }
                 iScaleListener.getDoubleSeekValue(minValueIndex +"",minValueIndex2 +"");
                 break;
@@ -327,11 +334,18 @@ public class DoubleSeekBar extends View {
         }
         sDistance = titleDistance[1];
         for (int n = 0; n < scaleArray.length ; n++) {
-            int measreTextWidth = (int) mPaintText.measureText(scaleArray[n]);
-            Log.i("TAG", "===drawTextMeasure: " + measreTextWidth);
-            canvas.drawText(scaleArray[n], sDistance * n + SLIDER_WIDTH / 2 - measreTextWidth /2, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    40,getResources().getDisplayMetrics()), mPaintText);
-
+            int measureTextWidth = (int) mPaintText.measureText(scaleArray[n]);
+            Log.i("TAG", "===drawTextMeasure: " + measureTextWidth);
+            if (n == scaleArray.length - 1){
+                canvas.drawText(scaleArray[n], sDistance * n + SLIDER_WIDTH / 2 - measureTextWidth * 3 / 4, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        30,getResources().getDisplayMetrics()), mPaintText);
+            }else if (n == scaleArray.length - 2){
+                canvas.drawText(scaleArray[n], sDistance * n + SLIDER_WIDTH / 2 - measureTextWidth * 3 / 4, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        30,getResources().getDisplayMetrics()), mPaintText);
+            }else {
+                canvas.drawText(scaleArray[n], sDistance * n + SLIDER_WIDTH / 2 - measureTextWidth /2, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        30,getResources().getDisplayMetrics()), mPaintText);
+            }
         }
     }
 
@@ -352,5 +366,33 @@ public class DoubleSeekBar extends View {
     protected void onWindowVisibilityChanged(int visibility) {
         super.onWindowVisibilityChanged(visibility);
         invalidate();
+    }
+
+
+    @Nullable
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        //创建可被序列化的bundle对象,
+        Bundle bundle = new Bundle();
+        //保存系统的原有其他状态
+        bundle.putParcelable(INSTANCE,super.onSaveInstanceState());
+        //保存双向seekBar的状态信息
+        bundle.putInt("lowX",currentX);
+        bundle.putInt("highX",currentX2);
+        return bundle;
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Bundle){
+            Bundle bundle = (Bundle) state;
+            currentX = bundle.getInt("lowX");
+            currentX2 = bundle.getInt("highX");
+            Log.i(TAG, "===onRestoreInstanceState: " + currentX2);
+            super.onRestoreInstanceState(bundle.getParcelable(INSTANCE));
+            return;
+        }
+        super.onRestoreInstanceState(state);
     }
 }

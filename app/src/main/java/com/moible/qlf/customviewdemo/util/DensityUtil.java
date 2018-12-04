@@ -1,6 +1,7 @@
 package com.moible.qlf.customviewdemo.util;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 public class DensityUtil {
   
@@ -19,30 +20,75 @@ public class DensityUtil {
         final float scale = context.getResources().getDisplayMetrics().density;  
         return (int) (pxValue / scale + 0.5f);  
     }
-
     /**
-     * 将px值转换为sp值，保证文字大小不变
+
+     * sp转px
+
      *
-     * @param pxValue
+
+     * @param context
+
      * @param
-     *            （DisplayMetrics类中属性scaledDensity）
+
      * @return
+
      */
-    public static int px2sp(Context context, float pxValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (pxValue / fontScale + 0.5f);
+
+    public static int sp2px(Context context, float spVal)
+
+    {
+
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+
+                spVal, context.getResources().getDisplayMetrics());
+
     }
 
+
+
     /**
-     * 将sp值转换为px值，保证文字大小不变
+
+     * px转dp
+
      *
-     * @param spValue
-     * @param
-     *            （DisplayMetrics类中属性scaledDensity）
+
+     * @param context
+
+     * @param pxVal
+
      * @return
+
      */
-    public static int sp2px(Context context, float spValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (spValue * fontScale + 0.5f);
+
+    public static float px2dp(Context context, float pxVal) {
+
+        final float scale = context.getResources().getDisplayMetrics().density;
+
+        return (pxVal / scale);
+
+    }
+
+
+
+    /**
+
+     * px转sp
+
+     *
+
+     * @param
+
+     * @param pxVal
+
+     * @return
+
+     */
+
+    public static float px2sp(Context context, float pxVal)
+
+    {
+
+        return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
+
     }
 } 

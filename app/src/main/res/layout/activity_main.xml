@@ -21,4 +21,12 @@
         android:text="弹窗"
         />
 
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="取消"
+        android:layout_marginLeft="100dp"
+        custom:layout_constraintLeft_toRightOf="@+id/button"
+        />
 </android.support.constraint.ConstraintLayout>
