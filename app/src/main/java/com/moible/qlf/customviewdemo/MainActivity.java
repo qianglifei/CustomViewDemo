@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.moible.qlf.customviewdemo.doubleseekbar.DoubleSeekBar;
+import com.moible.qlf.customviewdemo.surfaceviewdemo.SurfaceViewDemo;
 
  public class MainActivity extends AppCompatActivity {
     private String TAG = "QLF";
@@ -52,7 +53,7 @@ import com.moible.qlf.customviewdemo.doubleseekbar.DoubleSeekBar;
                  mPopWindow.dismiss();
              }
          });
-         DoubleSeekBar mDoubleSeekBar = contentView.findViewById(R.id.doubleSeek);
+         SurfaceViewDemo mDoubleSeekBar = contentView.findViewById(R.id.doubleSeek);
 
          mDoubleSeekBar.setOnScaleListener(new DoubleSeekBar.OnScaleListener() {
              @Override

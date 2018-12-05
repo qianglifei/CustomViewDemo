@@ -89,6 +89,7 @@ public class DoubleSeekBar extends View {
     private OnScaleListener iScaleListener = null;
 
     private static final String INSTANCE = "instance";
+
     public DoubleSeekBar(Context context) {
        this(context,null);
         Log.i("TAG", "===DoubleSeekBar1: " + currentX2);
